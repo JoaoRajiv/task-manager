@@ -1,1 +1,1 @@
-npx prettier --white src
+npx lint-staged
