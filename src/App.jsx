@@ -5,7 +5,7 @@ export default function App() {
   console.log(`Hello, ${name}!`);
   return (
     <div>
-      <Task />
+      <h1 className="text-red-500">Task Manager</h1>
     </div>
   );
 }
