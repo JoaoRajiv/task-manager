@@ -1,4 +1,4 @@
-export default function SidebarButton({ children, variant, icon }) {
+export default function SidebarButton({ children, variant }) {
   const getVariantClasses = () => {
     switch (variant) {
       case 'selected':
@@ -13,7 +13,6 @@ export default function SidebarButton({ children, variant, icon }) {
       href="#"
       className={`flex items-center gap-2 rounded-lg px-4 py-2 ${getVariantClasses()}`}
     >
-      {icon}
       {children}
     </a>
   );

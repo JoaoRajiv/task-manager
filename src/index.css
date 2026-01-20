@@ -132,4 +132,11 @@
   body {
     @apply bg-[#F8F8F8];
   }
+
+  html,
+  body {
+    @apply antialiased antialiased; /* Para navegadores baseados em Webkit e Firefox */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
