@@ -4,7 +4,7 @@ export default function Button({ children, variant }) {
       case "primary":
         return "bg-brand-primary text-white";
       case "danger":
-        return "bg-brand-danger text-white";
+        return "bg-transparent text-gray";
       default:
         return "bg-brand-primary text-white";
     }
