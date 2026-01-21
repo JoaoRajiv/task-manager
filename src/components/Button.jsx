@@ -4,7 +4,7 @@ export default function Button({ children, variant }) {
       case "primary":
         return "bg-brand-primary text-white";
       case "danger":
-        return "bg-transparent text-gray";
+        return "bg-transparent text-gray hover:bg-brand-danger/80  border hover:text-white border-brand-danger/80";
       default:
         return "bg-brand-primary text-white";
     }
