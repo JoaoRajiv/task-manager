@@ -14,6 +14,25 @@ export default function Task() {
   const morningTasks = tasks.filter((task) => task.time === "morning");
   const afternoonTasks = tasks.filter((task) => task.time === "afternoon");
   const nightTasks = tasks.filter((task) => task.time === "evening");
+
+  const handleTaskCheckboxClick = (taskId) => {
+    const newTasks = tasks.map((task) => {
+      if (task.id !== taskId) {
+        return task;
+      }
+      if (task.status === "pending") {
+        return { ...task, status: "in_progress" };
+      }
+      if (task.status === "in_progress") {
+        return { ...task, status: "done" };
+      }
+      if (task.status === "done") {
+        return { ...task, status: "pending" };
+      }
+    });
+    setTasks(newTasks);
+  };
+
   return (
     <div className="w-full px-8 py-16">
       <div className="flex w-full justify-between">
@@ -42,7 +61,11 @@ export default function Task() {
             <TaskSeparatorTitle>Manhã</TaskSeparatorTitle>
           </TasksSeparator>
           {morningTasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
+            <TaskItem
+              key={task.id}
+              task={task}
+              handleTaskCheckboxClick={handleTaskCheckboxClick}
+            />
           ))}
         </div>
 
@@ -53,7 +76,11 @@ export default function Task() {
             <TaskSeparatorTitle>Tarde</TaskSeparatorTitle>
           </TasksSeparator>
           {afternoonTasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
+            <TaskItem
+              key={task.id}
+              task={task}
+              handleTaskCheckboxClick={handleTaskCheckboxClick}
+            />
           ))}
         </div>
 
@@ -64,7 +91,11 @@ export default function Task() {
             <TaskSeparatorTitle>Noite</TaskSeparatorTitle>
           </TasksSeparator>
           {nightTasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
+            <TaskItem
+              key={task.id}
+              task={task}
+              handleTaskCheckboxClick={handleTaskCheckboxClick}
+            />
           ))}
         </div>
       </div>
