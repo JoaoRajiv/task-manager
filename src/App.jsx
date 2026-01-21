@@ -5,7 +5,7 @@ import { Toaster } from "sonner";
 export default function App() {
   return (
     <div className="flex">
-      <Toaster position="top-right" richColors />
+      <Toaster />
       <Sidebar />
       <Tasks />
     </div>
