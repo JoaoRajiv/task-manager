@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { toast } from "sonner";
+import {
+  AddIcon,
+  CloudSunIcon,
+  MoonIcon,
+  SunIcon,
+  TrashIcon,
+} from "../assets/icons";
 import Button from "./Button";
-import AddIcon from "../assets/icons/add.svg?react";
-import TrashIcon from "../assets/icons/trash.svg?react";
-import SunIcon from "../assets/icons/sun.svg?react";
-import CloudSunIcon from "../assets/icons/cloud-sun.svg?react";
-import MoonIcon from "../assets/icons/moon.svg?react";
-import { TaskSeparatorTitle, TasksSeparator } from "./TasnksSeparator";
+import { TaskSeparatorTitle, TasksSeparator } from "./TasksSeparator";
 import TASKS from "../constants/tasks";
 import TaskItem from "./TaskItem";
 
@@ -19,6 +22,7 @@ export default function Task() {
   const handleTaskDeleteClick = (taskId) => {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(newTasks);
+    toast.success("Tarefa removida com sucesso!");
   };
 
   const handleTaskCheckboxClick = (taskId) => {
@@ -27,12 +31,15 @@ export default function Task() {
         return task;
       }
       if (task.status === "pending") {
+        toast.info("Tarefa em progresso!");
         return { ...task, status: "in_progress" };
       }
       if (task.status === "in_progress") {
+        toast.success("Tarefa concluída!");
         return { ...task, status: "done" };
       }
       if (task.status === "done") {
+        toast.info("Tarefa marcada como pendente!");
         return { ...task, status: "pending" };
       }
     });
