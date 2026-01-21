@@ -1,10 +1,10 @@
-export default function Button({ children, variant }) {
+export default function Button({ children, variant, ...rest }) {
   const getVariantClasses = () => {
     switch (variant) {
       case "primary":
         return "bg-brand-primary text-white";
       case "danger":
-        return "bg-transparent text-gray hover:bg-brand-danger/80  border hover:text-white border-brand-danger/80";
+        return "bg-transparent text-brand-text-gray hover:bg-brand-danger hover:text-white";
       default:
         return "bg-brand-primary text-white";
     }
@@ -12,6 +12,7 @@ export default function Button({ children, variant }) {
   return (
     <button
       className={`flex items-center gap-1 rounded-md px-3 py-2 text-xs font-semibold transition hover:opacity-80 ${getVariantClasses()}`}
+      {...rest}
     >
       {children}
     </button>

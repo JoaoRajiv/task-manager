@@ -11,9 +11,15 @@ import TaskItem from "./TaskItem";
 
 export default function Task() {
   const [tasks, setTasks] = useState(TASKS);
+
   const morningTasks = tasks.filter((task) => task.time === "morning");
   const afternoonTasks = tasks.filter((task) => task.time === "afternoon");
   const nightTasks = tasks.filter((task) => task.time === "evening");
+
+  const handleTaskDeleteClick = (taskId) => {
+    const newTasks = tasks.filter((task) => task.id !== taskId);
+    setTasks(newTasks);
+  };
 
   const handleTaskCheckboxClick = (taskId) => {
     const newTasks = tasks.map((task) => {
@@ -34,7 +40,8 @@ export default function Task() {
   };
 
   return (
-    <div className="w-full px-8 py-16">
+    <div className="w-full space-y-6 px-8 py-16">
+      {/* Título  */}
       <div className="flex w-full justify-between">
         <div>
           <span className="text-xs font-semibold text-brand-primary">
@@ -53,6 +60,7 @@ export default function Task() {
           </Button>
         </div>
       </div>
+      {/* Tasks  */}
       <div className="rounded-xl bg-white p-6">
         {/* Manhã */}
         <div className="space-y-3">
@@ -64,7 +72,8 @@ export default function Task() {
             <TaskItem
               key={task.id}
               task={task}
-              handleTaskCheckboxClick={handleTaskCheckboxClick}
+              handleCheckboxClick={handleTaskCheckboxClick}
+              handleDeleteClick={handleTaskDeleteClick}
             />
           ))}
         </div>
@@ -79,7 +88,8 @@ export default function Task() {
             <TaskItem
               key={task.id}
               task={task}
-              handleTaskCheckboxClick={handleTaskCheckboxClick}
+              handleCheckboxClick={handleTaskCheckboxClick}
+              handleDeleteClick={handleTaskDeleteClick}
             />
           ))}
         </div>
@@ -94,7 +104,8 @@ export default function Task() {
             <TaskItem
               key={task.id}
               task={task}
-              handleTaskCheckboxClick={handleTaskCheckboxClick}
+              handleCheckboxClick={handleTaskCheckboxClick}
+              handleDeleteClick={handleTaskDeleteClick}
             />
           ))}
         </div>
