@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import Button from "./Button";
+import { TaskSeparatorTitle, TasksSeparator } from "./TasksSeparator";
+import TASKS from "../constants/tasks";
 import {
   AddIcon,
   CloudSunIcon,
@@ -7,13 +10,12 @@ import {
   SunIcon,
   TrashIcon,
 } from "../assets/icons";
-import Button from "./Button";
-import { TaskSeparatorTitle, TasksSeparator } from "./TasksSeparator";
-import TASKS from "../constants/tasks";
 import TaskItem from "./TaskItem";
+import AddTaskDialog from "./AddTaskDialog";
 
 export default function Task() {
   const [tasks, setTasks] = useState(TASKS);
+  const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
 
   const morningTasks = tasks.filter((task) => task.time === "morning");
   const afternoonTasks = tasks.filter((task) => task.time === "afternoon");
@@ -61,10 +63,14 @@ export default function Task() {
             Remover Tarefa
             <TrashIcon />
           </Button>
-          <Button variant="primary">
+          <Button
+            variant="primary"
+            onClick={() => setAddTaskDialogIsOpen(!addTaskDialogIsOpen)}
+          >
             Adicionar Tarefa
             <AddIcon />
           </Button>
+          <AddTaskDialog isOpen={addTaskDialogIsOpen} />
         </div>
       </div>
       {/* Tasks  */}
