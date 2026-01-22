@@ -3,7 +3,7 @@ export default function Input({ label, ...rest }) {
     <div className="flex flex-col space-y-1 text-left">
       <label
         className="text-sm font-semibold text-brand-dark-blue"
-        for={rest.id}
+        htmlFor={rest.id}
       >
         {label}
       </label>

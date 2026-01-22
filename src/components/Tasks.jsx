@@ -48,6 +48,11 @@ export default function Task() {
     setTasks(newTasks);
   };
 
+  const handleAddTask = (task) => {
+    setTasks([...tasks, task]);
+    toast.success("Tarefa adicionada com sucesso!");
+  };
+
   return (
     <div className="w-full space-y-6 px-8 py-16">
       {/* Título  */}
@@ -73,6 +78,7 @@ export default function Task() {
           <AddTaskDialog
             isOpen={addTaskDialogIsOpen}
             handleClose={() => setAddTaskDialogIsOpen(false)}
+            handleSubmit={handleAddTask}
           />
         </div>
       </div>
