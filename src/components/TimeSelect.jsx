@@ -9,6 +9,9 @@ export default function TimeSelect(props) {
         className="focus:border-brand-blue rounded-lg border border-solid border-brand-light-gray px-4 py-3 placeholder:text-sm placeholder:text-brand-text-gray focus:outline-brand-primary"
         {...props}
       >
+        <option value="" default>
+          Selecione o período
+        </option>
         <option value="morning">Manhã</option>
         <option value="afternoon">Tarde</option>
         <option value="evening">Noite</option>
