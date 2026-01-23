@@ -92,7 +92,6 @@ export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
                     className="w-full"
                     onClick={() => {
                       handleSaveClick();
-                      handleClose();
                     }}
                   >
                     Salvar
