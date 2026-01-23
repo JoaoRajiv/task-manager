@@ -6,7 +6,7 @@ export default function TimeSelect(props) {
       <InputLabel htmlFor="time">Período do dia</InputLabel>
       <select
         id="time"
-        className="focus:border-brand-blue rounded-lg border border-solid border-brand-light-gray px-4 py-3 placeholder:text-sm placeholder:text-brand-text-gray focus:outline-brand-primary"
+        className={`focus:border-brand-blue rounded-lg border border-solid border-brand-light-gray px-4 py-3 placeholder:text-sm placeholder:text-brand-text-gray focus:outline-brand-primary ${props.errorMessage ? "border-red-500" : "border-brand-light-gray"}`}
         {...props}
       >
         <option value="" default>
@@ -16,6 +16,9 @@ export default function TimeSelect(props) {
         <option value="afternoon">Tarde</option>
         <option value="evening">Noite</option>
       </select>
+      {props.errorMessage && (
+        <p className="text-left text-xs text-red-500">{props.errorMessage}</p>
+      )}
     </div>
   );
 }

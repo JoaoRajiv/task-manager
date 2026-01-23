@@ -1,4 +1,4 @@
-export default function Input({ label, ...rest }) {
+export default function Input({ label, errorMessage, ...rest }) {
   return (
     <div className="flex flex-col space-y-1 text-left">
       <label
@@ -8,9 +8,12 @@ export default function Input({ label, ...rest }) {
         {label}
       </label>
       <input
-        className="focus:border-brand-blue rounded-lg border border-solid border-brand-light-gray px-4 py-3 placeholder:text-sm placeholder:text-brand-text-gray focus:outline-brand-primary"
+        className={`focus:border-brand-blue rounded-lg border border-solid px-4 py-3 placeholder:text-sm placeholder:text-brand-text-gray focus:outline-brand-primary ${errorMessage ? "border-red-500" : "border-brand-light-gray"}`}
         {...rest}
       />
+      {errorMessage && (
+        <p className="text-left text-xs text-red-500">{errorMessage}</p>
+      )}
     </div>
   );
 }
