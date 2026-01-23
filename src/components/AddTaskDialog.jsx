@@ -37,9 +37,9 @@ export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
         message: "Descrição é obrigatória",
       });
     }
-    console.log({ newErrors });
+    setErrors(newErrors);
+
     if (newErrors.length > 0) {
-      setErrors(newErrors);
       return;
     }
     handleSubmit({
