@@ -130,7 +130,7 @@
   }
 
   body {
-    @apply bg-[#F8F8F8];
+    @apply bg-brand-background;
   }
 
   html,

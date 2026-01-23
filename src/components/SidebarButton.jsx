@@ -1,11 +1,11 @@
 export default function SidebarButton({ children, variant }) {
   const getVariantClasses = () => {
     switch (variant) {
-      case 'selected':
-        return 'bg-[#E6F7F8] text-[#00ADb5]';
-      case 'default':
+      case "selected":
+        return "bg-brand-primary/10 text-brand-primary";
+      case "default":
       default:
-        return 'hover:bg-[#e0f7f9]';
+        return "hover:bg-brand-primary/10";
     }
   };
   return (
