@@ -64,13 +64,14 @@ export default function Task() {
           <h2 className="text-xl font-semibold">Minhas tarefas</h2>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="danger">
+          <Button variant="danger" size="large">
             Remover Tarefa
             <TrashIcon />
           </Button>
           <Button
             variant="primary"
             onClick={() => setAddTaskDialogIsOpen(!addTaskDialogIsOpen)}
+            size="large"
           >
             Adicionar Tarefa
             <AddIcon />

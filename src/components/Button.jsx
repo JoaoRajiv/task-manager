@@ -29,7 +29,7 @@ export default function Button({
   };
   return (
     <button
-      className={`flex items-center justify-center gap-1 rounded-md px-3 ${getSizeClasses()} font-semibold transition hover:opacity-80 ${getVariantClasses()} ${className}`}
+      className={`flex items-center justify-center gap-1 rounded-md px-2 ${getSizeClasses()} font-semibold transition hover:opacity-80 ${getVariantClasses()} ${className}`}
       {...rest}
     >
       {children}

@@ -1,14 +1,13 @@
-export default function Input({ label, errorMessage, ...rest }) {
+import { forwardRef } from "react";
+import InputLabel from "./InputLabel";
+
+export const Input = forwardRef(({ label, errorMessage, ...rest }, ref) => {
   return (
     <div className="flex flex-col space-y-1 text-left">
-      <label
-        className="text-sm font-semibold text-brand-dark-blue"
-        htmlFor={rest.id}
-      >
-        {label}
-      </label>
+      <InputLabel htmlFor={rest.id}>{label}</InputLabel>
       <input
         className={`focus:border-brand-blue rounded-lg border border-solid px-4 py-3 placeholder:text-sm placeholder:text-brand-text-gray focus:outline-brand-primary ${errorMessage ? "border-red-500" : "border-brand-light-gray"}`}
+        ref={ref}
         {...rest}
       />
       {errorMessage && (
@@ -16,4 +15,6 @@ export default function Input({ label, errorMessage, ...rest }) {
       )}
     </div>
   );
-}
+});
+
+export default Input;

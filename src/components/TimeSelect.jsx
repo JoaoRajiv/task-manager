@@ -1,12 +1,14 @@
 import InputLabel from "./InputLabel";
+import { forwardRef } from "react";
 
-export default function TimeSelect(props) {
+export const TimeSelect = forwardRef(({ errorMessage, ...props }, ref) => {
   return (
     <div className="flex flex-col gap-1 text-left">
       <InputLabel htmlFor="time">Período do dia</InputLabel>
       <select
         id="time"
-        className={`focus:border-brand-blue rounded-lg border border-solid border-brand-light-gray px-4 py-3 placeholder:text-sm placeholder:text-brand-text-gray focus:outline-brand-primary ${props.errorMessage ? "border-red-500" : "border-brand-light-gray"}`}
+        className={`focus:border-brand-blue rounded-lg border border-solid border-brand-light-gray px-4 py-3 placeholder:text-sm placeholder:text-brand-text-gray focus:outline-brand-primary ${errorMessage ? "border-red-500" : "border-brand-light-gray"}`}
+        ref={ref}
         {...props}
       >
         <option value="" default>
@@ -17,8 +19,12 @@ export default function TimeSelect(props) {
         <option value="evening">Noite</option>
       </select>
       {props.errorMessage && (
-        <p className="text-left text-xs text-red-500">{props.errorMessage}</p>
+        <p className="text-left text-xs text-red-500">{errorMessage}</p>
       )}
     </div>
   );
-}
+});
+
+TimeSelect.displayName = "TimeSelect";
+
+export default TimeSelect;
