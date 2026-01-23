@@ -41,7 +41,7 @@ export default function TaskItem({
         {task.title}
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="danger" onClick={() => handleDeleteClick(task.id)}>
+        <Button color="danger" onClick={() => handleDeleteClick(task.id)}>
           <TrashIcon />
         </Button>
         <a href="#" className="transition hover:opacity-75">
