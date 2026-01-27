@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Button from "./Button";
 import TasksSeparator from "./TasksSeparator";
-import TASKS from "../constants/tasks";
 import {
   AddIcon,
   CloudSunIcon,
@@ -14,8 +13,24 @@ import TaskItem from "./TaskItem";
 import AddTaskDialog from "./AddTaskDialog";
 
 export default function Task() {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState([]);
   const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      const fetchTasks = async () => {
+        const response = await fetch("http://localhost:3000/tasks", {
+          method: "GET",
+        });
+        const data = await response.json();
+        console.log(data[1]);
+        setTasks(data);
+      };
+      fetchTasks();
+    } catch (error) {
+      console.error("Erro ao buscar tarefas:", error);
+    }
+  }, []);
 
   const morningTasks = tasks.filter((task) => task.time === "morning");
   const afternoonTasks = tasks.filter((task) => task.time === "afternoon");
@@ -25,6 +40,11 @@ export default function Task() {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(newTasks);
     toast.success("Tarefa removida com sucesso!");
+  };
+
+  const handleDeleteAllTasks = () => {
+    setTasks([]);
+    toast.success("Todas as tarefas foram removidas!");
   };
 
   const handleTaskCheckboxClick = (taskId) => {
@@ -64,8 +84,12 @@ export default function Task() {
           <h2 className="text-xl font-semibold">Minhas tarefas</h2>
         </div>
         <div className="flex items-center gap-2">
-          <Button color="danger" size="large">
-            Remover Tarefa
+          <Button
+            color="danger"
+            size="large"
+            onClick={() => handleDeleteAllTasks()}
+          >
+            Remover Tarefas
             <TrashIcon />
           </Button>
           <Button
