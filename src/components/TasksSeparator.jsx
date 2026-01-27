@@ -1,11 +1,15 @@
-export function TasksSeparator({ children }) {
+import PropTypes from "prop-types";
+
+export default function TasksSeparator({ title, icon }) {
   return (
     <div className="flex items-center gap-2 border-b border-solid border-brand-border pb-1">
-      {children}
+      {icon}
+      <p className="text-sm text-brand-text-gray">{title}</p>
     </div>
   );
 }
 
-export function TaskSeparatorTitle({ children }) {
-  return <p className="text-sm text-brand-text-gray">{children}</p>;
-}
+TasksSeparator.propTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.element.isRequired,
+};

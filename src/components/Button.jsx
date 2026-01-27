@@ -7,7 +7,7 @@ export default function Button({ children, color, size, className, ...rest }) {
       color: {
         primary: "bg-brand-primary text-white",
         secondary:
-          "bg-brand-light-gray text-brand-dark-blue hover:bg-brand-gray",
+          "hover:bg-brand-gray bg-brand-light-gray text-brand-dark-blue",
         danger:
           "bg-transparent text-brand-text-gray hover:bg-brand-danger hover:text-white",
       },

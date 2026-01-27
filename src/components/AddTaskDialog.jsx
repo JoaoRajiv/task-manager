@@ -113,7 +113,7 @@ export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
 
                 <div className="flex gap-3">
                   <Button
-                    color="secondary"
+                    color="danger"
                     size="large"
                     className="w-full"
                     onClick={handleClose}

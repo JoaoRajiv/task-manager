@@ -13,11 +13,11 @@ export default function Sidebar() {
         </p>
       </div>
       <div className="flex flex-col gap-2 p-2">
-        <SidebarButton variant="default">
+        <SidebarButton color="unselected">
           <HomeIcon />
           Início
         </SidebarButton>
-        <SidebarButton variant="selected">
+        <SidebarButton color="selected">
           <TasksIcon />
           Minhas Tarefas
         </SidebarButton>

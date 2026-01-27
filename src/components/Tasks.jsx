@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import Button from "./Button";
-import { TaskSeparatorTitle, TasksSeparator } from "./TasksSeparator";
+import TasksSeparator from "./TasksSeparator";
 import TASKS from "../constants/tasks";
 import {
   AddIcon,
@@ -87,10 +87,7 @@ export default function Task() {
       <div className="rounded-xl bg-white p-6">
         {/* Manhã */}
         <div className="space-y-3">
-          <TasksSeparator>
-            <SunIcon />
-            <TaskSeparatorTitle>Manhã</TaskSeparatorTitle>
-          </TasksSeparator>
+          <TasksSeparator title="Manhã" icon={<SunIcon />} />
           {morningTasks.map((task) => (
             <TaskItem
               key={task.id}
@@ -103,10 +100,7 @@ export default function Task() {
 
         {/* Tarde */}
         <div className="my-6 space-y-3">
-          <TasksSeparator>
-            <CloudSunIcon />
-            <TaskSeparatorTitle>Tarde</TaskSeparatorTitle>
-          </TasksSeparator>
+          <TasksSeparator title="Tarde" icon={<CloudSunIcon />} />
           {afternoonTasks.map((task) => (
             <TaskItem
               key={task.id}
@@ -119,10 +113,7 @@ export default function Task() {
 
         {/* Noite */}
         <div className="space-y-3">
-          <TasksSeparator>
-            <MoonIcon />
-            <TaskSeparatorTitle>Noite</TaskSeparatorTitle>
-          </TasksSeparator>
+          <TasksSeparator title="Noite" icon={<MoonIcon />} />
           {nightTasks.map((task) => (
             <TaskItem
               key={task.id}
