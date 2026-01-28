@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export default function Button({ children, color, size, className, ...rest }) {
   const button = tv({
-    base: "flex items-center justify-center gap-1 rounded-md px-2 font-semibold transition hover:opacity-80",
+    base: `flex items-center justify-center gap-1 rounded-md px-2 font-semibold transition hover:opacity-80`,
     variants: {
       color: {
         primary: "bg-brand-primary text-white",
@@ -16,6 +16,9 @@ export default function Button({ children, color, size, className, ...rest }) {
         small: "py-1 text-xs",
         large: "py-2 text-sm",
       },
+      disabled: {
+        true: "opacity-50 hover:opacity-50",
+      },
     },
     defaultVariants: {
       color: "primary",
@@ -23,7 +26,10 @@ export default function Button({ children, color, size, className, ...rest }) {
     },
   });
   return (
-    <button className={button({ color, size, className })} {...rest}>
+    <button
+      className={button({ color, size, className, disabled: rest.disabled })}
+      {...rest}
+    >
       {children}
     </button>
   );

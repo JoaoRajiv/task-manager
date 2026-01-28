@@ -37,14 +37,7 @@ export default function Task() {
   const afternoonTasks = tasks.filter((task) => task.time === "afternoon");
   const nightTasks = tasks.filter((task) => task.time === "evening");
 
-  const handleTaskDeleteClick = async (taskId) => {
-    const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) {
-      toast.error("Erro ao remover tarefa!");
-      return;
-    }
+  const onDeleteTaskSuccess = async (taskId) => {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(newTasks);
     toast.success("Tarefa removida com sucesso!");
@@ -77,17 +70,13 @@ export default function Task() {
     setTasks(newTasks);
   };
 
-  const handleAddTaskSubmit = async (task) => {
-    const response = await fetch("http://localhost:3000/tasks", {
-      method: "POST",
-      body: JSON.stringify(task),
-    });
-    if (!response.ok) {
-      toast.error("Erro ao adicionar tarefa!");
-      return;
-    }
+  const onTaskSubmitSuccess = async (task) => {
     setTasks([...tasks, task]);
     toast.success("Tarefa adicionada com sucesso!");
+  };
+
+  const onTaskSubmitError = () => {
+    toast.error("Erro ao adicionar tarefa!");
   };
 
   return (
@@ -127,7 +116,8 @@ export default function Task() {
           <AddTaskDialog
             isOpen={addTaskDialogIsOpen}
             handleClose={() => setAddTaskDialogIsOpen(false)}
-            handleSubmit={handleAddTaskSubmit}
+            onSubmitSuccess={onTaskSubmitSuccess}
+            onSubmitError={onTaskSubmitError}
           />
         </div>
       </div>
@@ -141,7 +131,7 @@ export default function Task() {
               key={task.id}
               task={task}
               handleCheckboxClick={handleTaskCheckboxClick}
-              handleDeleteClick={handleTaskDeleteClick}
+              onDeleteSuccess={onDeleteTaskSuccess}
             />
           ))}
         </div>
@@ -154,7 +144,7 @@ export default function Task() {
               key={task.id}
               task={task}
               handleCheckboxClick={handleTaskCheckboxClick}
-              handleDeleteClick={handleTaskDeleteClick}
+              onDeleteSuccess={onDeleteTaskSuccess}
             />
           ))}
         </div>
@@ -167,7 +157,7 @@ export default function Task() {
               key={task.id}
               task={task}
               handleCheckboxClick={handleTaskCheckboxClick}
-              handleDeleteClick={handleTaskDeleteClick}
+              onDeleteSuccess={onDeleteTaskSuccess}
             />
           ))}
         </div>

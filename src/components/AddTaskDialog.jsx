@@ -7,29 +7,25 @@ import TimeSelect from "./TimeSelect";
 import Input from "./Input";
 import Button from "./Button";
 import { v4 } from "uuid";
+import { LoaderIcon } from "../assets/icons";
 
-export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
-  const [title, setTitle] = useState("");
-  const [time, setTime] = useState("");
-  const [description, setDescription] = useState("");
+export default function AddTaskDialog({
+  isOpen,
+  handleClose,
+  onSubmitSuccess,
+  onSubmitError,
+}) {
   const [errors, setErrors] = useState([]);
 
-  useEffect(() => {
-    if (isOpen) {
-      setTitle("");
-      setTime("");
-      setDescription("");
-    }
-  }, [isOpen]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const nodeRef = useRef();
   const titleRef = useRef();
   const descriptionRef = useRef();
   const timeRef = useRef();
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     const newErrors = [];
-
     const title = titleRef.current.value;
     const description = descriptionRef.current.value;
     const time = timeRef.current.value;
@@ -46,19 +42,23 @@ export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
         message: "Descrição é obrigatória",
       });
     }
-    setErrors(newErrors);
 
+    setErrors(newErrors);
     if (newErrors.length > 0) {
       return;
     }
-    handleSubmit({
-      id: v4(),
-      title,
-      description,
-      time,
-      status: "pending",
+    setIsLoading(true);
+    const task = { id: v4(), title, description, time, status: "pending" };
+    const response = await fetch("http://localhost:3000/tasks", {
+      method: "POST",
+      body: JSON.stringify(task),
     });
-    setErrors([]);
+    if (!response.ok) {
+      setIsLoading(false);
+      return onSubmitError();
+    }
+    onSubmitSuccess(task);
+    setIsLoading(false);
     handleClose();
   };
 
@@ -101,9 +101,6 @@ export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
                   errorMessage={titleError?.message}
                   ref={titleRef}
                 />
-
-                <TimeSelect errorMessage={timeError?.message} ref={timeRef} />
-
                 <Input
                   id="description"
                   label="Descrição"
@@ -111,6 +108,8 @@ export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
                   errorMessage={descriptionError?.message}
                   ref={descriptionRef}
                 />
+
+                <TimeSelect errorMessage={timeError?.message} ref={timeRef} />
 
                 <div className="flex gap-3">
                   <Button
@@ -124,10 +123,10 @@ export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
                   <Button
                     size="large"
                     className="w-full"
-                    onClick={() => {
-                      handleSaveClick();
-                    }}
+                    onClick={handleSaveClick}
+                    disabled={isLoading}
                   >
+                    {isLoading && <LoaderIcon className="animate-spin" />}
                     Salvar
                   </Button>
                 </div>
@@ -144,5 +143,5 @@ export default function AddTaskDialog({ isOpen, handleClose, handleSubmit }) {
 AddTaskDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmitSuccess: PropTypes.func.isRequired,
 };

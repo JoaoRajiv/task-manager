@@ -1,12 +1,28 @@
+import { useState } from "react";
 import { CheckIcon, DetailsIcon, LoaderIcon, TrashIcon } from "../assets/icons";
 import Button from "./Button";
 import PropTypes from "prop-types";
+import { toast } from "sonner";
 
 export default function TaskItem({
   task,
   handleCheckboxClick,
-  handleDeleteClick,
+  onDeleteSuccess,
 }) {
+  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
+
+  const handleDeleteClick = async () => {
+    setDeleteIsLoading(true);
+    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      setDeleteIsLoading(false);
+      return toast.error("Erro ao remover tarefa!");
+    }
+    onDeleteSuccess(task.id);
+    setDeleteIsLoading(false);
+  };
   const getStatusClasses = () => {
     switch (task.status) {
       case "done":
@@ -42,8 +58,17 @@ export default function TaskItem({
         {task.title}
       </div>
       <div className="flex items-center gap-2">
-        <Button color="danger" onClick={() => handleDeleteClick(task.id)}>
-          <TrashIcon />
+        <Button
+          color="danger"
+          onClick={handleDeleteClick}
+          disabled={deleteIsLoading}
+          className={`${deleteIsLoading ? "hover:bg-transparent hover:text-brand-text-gray" : ""}`}
+        >
+          {deleteIsLoading ? (
+            <LoaderIcon className="animate-spin" />
+          ) : (
+            <TrashIcon />
+          )}
         </Button>
         <a href="#" className="transition hover:opacity-75">
           <DetailsIcon />
@@ -62,5 +87,5 @@ TaskItem.propTypes = {
     status: PropTypes.oneOf(["pending", "in_progress", "done"]).isRequired,
   }).isRequired,
   handleCheckboxClick: PropTypes.func.isRequired,
-  handleDeleteClick: PropTypes.func.isRequired,
+  onDeleteSuccess: PropTypes.func.isRequired,
 };
