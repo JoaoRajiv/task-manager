@@ -1,38 +1,59 @@
 {
   "tasks": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Estudar",
       "description": "Estudar React e TailwindCSS",
       "time": "morning",
       "status": "done"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Reunião",
       "description": "Reunião com a equipe de desenvolvimento",
       "time": "evening",
       "status": "in_progress"
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Exercício",
       "description": "Fazer exercícios físicos",
       "time": "afternoon",
       "status": "pending"
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Ler Livro",
       "description": "Ler capítulo do livro de programação",
       "time": "evening",
       "status": "done"
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Cozinhar",
       "description": "Preparar o jantar",
       "time": "evening",
+      "status": "pending"
+    },
+    {
+      "id": "6c38b68b-5584-4499-bdc2-424141a83aa4",
+      "title": "teste",
+      "description": "teste",
+      "time": "morning",
+      "status": "pending"
+    },
+    {
+      "id": "0a859edb-2aa2-437a-b2eb-29d36896a226",
+      "title": "teste",
+      "description": "teste",
+      "time": "afternoon",
+      "status": "pending"
+    },
+    {
+      "id": "3313507a-3c50-43ef-ae2a-1b93a197ffe1",
+      "title": "er",
+      "description": "err",
+      "time": "morning",
       "status": "pending"
     }
   ]

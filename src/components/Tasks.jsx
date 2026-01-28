@@ -11,10 +11,12 @@ import {
 } from "../assets/icons";
 import TaskItem from "./TaskItem";
 import AddTaskDialog from "./AddTaskDialog";
+import RemoveTaskDialog from "./RemoveTaskDialog";
 
 export default function Task() {
   const [tasks, setTasks] = useState([]);
   const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
+  const [removeTaskDialogIsOpen, setRemoveTaskDialogIsOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -23,7 +25,6 @@ export default function Task() {
           method: "GET",
         });
         const data = await response.json();
-        console.log(data[1]);
         setTasks(data);
       };
       fetchTasks();
@@ -43,6 +44,7 @@ export default function Task() {
   };
 
   const handleDeleteAllTasks = () => {
+    setRemoveTaskDialogIsOpen(!removeTaskDialogIsOpen);
     setTasks([]);
     toast.success("Todas as tarefas foram removidas!");
   };
@@ -68,7 +70,15 @@ export default function Task() {
     setTasks(newTasks);
   };
 
-  const handleAddTask = (task) => {
+  const handleAddTaskSubmit = async (task) => {
+    const response = await fetch("http://localhost:3000/tasks", {
+      method: "POST",
+      body: JSON.stringify(task),
+    });
+    if (!response.ok) {
+      toast.error("Erro ao adicionar tarefa!");
+      return;
+    }
     setTasks([...tasks, task]);
     toast.success("Tarefa adicionada com sucesso!");
   };
@@ -87,7 +97,7 @@ export default function Task() {
           <Button
             color="danger"
             size="large"
-            onClick={() => handleDeleteAllTasks()}
+            onClick={() => setRemoveTaskDialogIsOpen(!removeTaskDialogIsOpen)}
           >
             Remover Tarefas
             <TrashIcon />
@@ -100,10 +110,17 @@ export default function Task() {
             Adicionar Tarefa
             <AddIcon />
           </Button>
+
+          <RemoveTaskDialog
+            isOpen={removeTaskDialogIsOpen}
+            handleClose={() => setRemoveTaskDialogIsOpen(false)}
+            handleDeleteAllTasks={handleDeleteAllTasks}
+          />
+
           <AddTaskDialog
             isOpen={addTaskDialogIsOpen}
             handleClose={() => setAddTaskDialogIsOpen(false)}
-            handleSubmit={handleAddTask}
+            handleSubmit={handleAddTaskSubmit}
           />
         </div>
       </div>
