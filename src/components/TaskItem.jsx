@@ -3,6 +3,7 @@ import { CheckIcon, DetailsIcon, LoaderIcon, TrashIcon } from "../assets/icons";
 import Button from "./Button";
 import PropTypes from "prop-types";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 export default function TaskItem({
   task,
@@ -70,9 +71,11 @@ export default function TaskItem({
             <TrashIcon />
           )}
         </Button>
-        <a href="#" className="transition hover:opacity-75">
-          <DetailsIcon />
-        </a>
+        <button className="transition hover:opacity-75">
+          <Link to={`/task/${task.id}`}>
+            <DetailsIcon />
+          </Link>
+        </button>
       </div>
     </div>
   );

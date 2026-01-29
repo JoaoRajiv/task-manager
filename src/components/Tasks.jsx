@@ -55,15 +55,15 @@ export default function Task() {
         return task;
       }
       if (task.status === "pending") {
-        toast.info("Tarefa em progresso!");
+        toast.info("Tarefa em progresso!", { duration: 1000 });
         return { ...task, status: "in_progress" };
       }
       if (task.status === "in_progress") {
-        toast.success("Tarefa concluída!");
+        toast.success("Tarefa concluída!", { duration: 1000 });
         return { ...task, status: "done" };
       }
       if (task.status === "done") {
-        toast.info("Tarefa marcada como pendente!");
+        toast.info("Tarefa marcada como pendente!", { duration: 1000 });
         return { ...task, status: "pending" };
       }
     });
