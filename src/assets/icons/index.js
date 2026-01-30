@@ -8,16 +8,20 @@ import MoonIcon from "./moon.svg?react";
 import SunIcon from "./sun.svg?react";
 import TrashIcon from "./trash.svg?react";
 import TasksIcon from "./tasks.svg?react";
+import ChevronRightIcon from "./chevron-right.svg?react";
+import ArrowLeftIcon from "./arrow-left.svg?react";
 
 export {
   AddIcon,
+  ArrowLeftIcon,
   CheckIcon,
-  CloudSunIcon,
   DetailsIcon,
+  CloudSunIcon,
   LoaderIcon,
   MoonIcon,
   SunIcon,
   TrashIcon,
   TasksIcon,
   HomeIcon,
+  ChevronRightIcon,
 };
