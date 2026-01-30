@@ -13,9 +13,6 @@ export const TimeSelect = forwardRef(({ errorMessage, ...props }, ref) => {
         ref={ref}
         {...props}
       >
-        <option value="" default>
-          Selecione o período
-        </option>
         <option value="morning">Manhã</option>
         <option value="afternoon">Tarde</option>
         <option value="evening">Noite</option>
