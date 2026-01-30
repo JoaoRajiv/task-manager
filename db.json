@@ -8,13 +8,6 @@
       "status": "pending"
     },
     {
-      "id": "c7834782-dade-449f-8098-e770ed2fa850",
-      "title": "srgdrf",
-      "description": "dsrgdf",
-      "time": "evening",
-      "status": "pending"
-    },
-    {
       "id": "bf707fff-d4ad-4280-bb4c-e384a7795f28",
       "title": "teste",
       "description": "srgdsr",
@@ -36,23 +29,9 @@
       "status": "pending"
     },
     {
-      "id": "3ce65ab2-5cae-45b4-a3f4-5b23ce361bf8",
-      "title": "sdfs",
-      "description": "fsdf",
-      "time": "evening",
-      "status": "pending"
-    },
-    {
-      "id": "f3570d20-fd92-4bba-a8f7-d0e138b473b0",
-      "title": "vsdegf",
-      "description": "s",
-      "time": "morning",
-      "status": "pending"
-    },
-    {
-      "id": "2ac72035-c0dc-4d9e-949b-80972fce6257",
-      "title": "Estudar JS",
-      "description": "Estudar React e Next",
+      "id": "0cce2265-6f42-4e92-9c06-fe128f6a4c2c",
+      "title": "manhã",
+      "description": "arttaerwsae",
       "time": "morning",
       "status": "pending"
     }
