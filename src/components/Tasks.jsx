@@ -12,44 +12,41 @@ import {
 import TaskItem from "./TaskItem";
 import AddTaskDialog from "./AddTaskDialog";
 import RemoveTaskDialog from "./RemoveTaskDialog";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function Task() {
-  const [tasks, setTasks] = useState([]);
+  const queryClient = useQueryClient();
+  const { data: tasks } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: async () => {
+      const response = await fetch("http://localhost:3000/tasks", {
+        method: "GET",
+      });
+      const tasks = await response.json();
+      return tasks;
+    },
+  });
   const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
   const [removeTaskDialogIsOpen, setRemoveTaskDialogIsOpen] = useState(false);
 
-  useEffect(() => {
-    try {
-      const fetchTasks = async () => {
-        const response = await fetch("http://localhost:3000/tasks", {
-          method: "GET",
-        });
-        const data = await response.json();
-        setTasks(data);
-      };
-      fetchTasks();
-    } catch (error) {
-      console.error("Erro ao buscar tarefas:", error);
-    }
-  }, []);
-
-  const morningTasks = tasks.filter((task) => task.time === "morning");
-  const afternoonTasks = tasks.filter((task) => task.time === "afternoon");
-  const nightTasks = tasks.filter((task) => task.time === "evening");
+  const morningTasks = tasks?.filter((task) => task.time === "morning");
+  const afternoonTasks = tasks?.filter((task) => task.time === "afternoon");
+  const nightTasks = tasks?.filter((task) => task.time === "evening");
 
   const onDeleteTaskSuccess = async (taskId) => {
-    console.log("Deleting task with ID:", taskId);
-    await fetch(taskId, {
-      method: "DELETE",
-    });
+    queryClient.setQueryData(["tasks"], (oldTasks) =>
+      oldTasks.filter((task) => task.id !== taskId),
+    );
     toast.success("Tarefa deletada com sucesso!");
   };
 
-  const handleDeleteTask = async () => {};
+  const handleDeleteTask = async () => {
+    await refetch();
+    toast.success("Tarefa removida com sucesso!");
+  };
 
   const handleDeleteAllTasks = () => {
     setRemoveTaskDialogIsOpen(!removeTaskDialogIsOpen);
-    setTasks([]);
     toast.success("Todas as tarefas foram removidas!");
   };
 
@@ -71,11 +68,11 @@ export default function Task() {
         return { ...task, status: "pending" };
       }
     });
-    setTasks(newTasks);
+    queryClient.setQueryData(["tasks"], newTasks);
   };
 
   const onTaskSubmitSuccess = async (task) => {
-    setTasks([...tasks, task]);
+    queryClient.setQueryData(["tasks"], (oldTasks) => [...oldTasks, task]);
     toast.success("Tarefa adicionada com sucesso!");
   };
 
@@ -130,12 +127,12 @@ export default function Task() {
         {/* Manhã */}
         <div className="space-y-3">
           <TasksSeparator title="Manhã" icon={<SunIcon />} />
-          {morningTasks.length === 0 && (
+          {morningTasks?.length === 0 && (
             <p className="text-sm text-brand-text-gray">
               Nenhuma tarefa para manhã.
             </p>
           )}
-          {morningTasks.map((task) => (
+          {morningTasks?.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
@@ -148,12 +145,12 @@ export default function Task() {
         {/* Tarde */}
         <div className="my-6 space-y-3">
           <TasksSeparator title="Tarde" icon={<CloudSunIcon />} />
-          {afternoonTasks.length === 0 && (
+          {afternoonTasks?.length === 0 && (
             <p className="text-sm text-brand-text-gray">
               Nenhuma tarefa para tarde.
             </p>
           )}
-          {afternoonTasks.map((task) => (
+          {afternoonTasks?.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
@@ -166,12 +163,12 @@ export default function Task() {
         {/* Noite */}
         <div className="space-y-3">
           <TasksSeparator title="Noite" icon={<MoonIcon />} />
-          {nightTasks.length === 0 && (
+          {nightTasks?.length === 0 && (
             <p className="text-sm text-brand-text-gray">
               Nenhuma tarefa para noite.
             </p>
           )}
-          {nightTasks.map((task) => (
+          {nightTasks?.map((task) => (
             <TaskItem
               key={task.id}
               task={task}

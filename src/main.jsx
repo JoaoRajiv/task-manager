@@ -5,6 +5,9 @@ import App from "./App.jsx";
 import TaskDetailsPage from "./pages/task-details.jsx";
 import "./index.css";
 import { Toaster } from "sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -19,7 +22,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Toaster closeButton pauseOnHover />
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <Toaster pauseOnHover />
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </React.StrictMode>,
 );
