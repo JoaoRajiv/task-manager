@@ -38,10 +38,14 @@ export default function Task() {
   const nightTasks = tasks.filter((task) => task.time === "evening");
 
   const onDeleteTaskSuccess = async (taskId) => {
-    const newTasks = tasks.filter((task) => task.id !== taskId);
-    setTasks(newTasks);
-    toast.success("Tarefa removida com sucesso!");
+    console.log("Deleting task with ID:", taskId);
+    await fetch(taskId, {
+      method: "DELETE",
+    });
+    toast.success("Tarefa deletada com sucesso!");
   };
+
+  const handleDeleteTask = async () => {};
 
   const handleDeleteAllTasks = () => {
     setRemoveTaskDialogIsOpen(!removeTaskDialogIsOpen);
