@@ -12,59 +12,97 @@ import Input from "../components/Input.jsx";
 import TimeSelect from "../components/TimeSelect.jsx";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function TaskDetailsPage() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const handleBackClick = () => {
-    navigate(-1);
-  };
   const { taskId } = useParams();
-  const [task, setTask] = useState();
   const {
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
 
-  useEffect(() => {
-    const fetchTask = async () => {
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
+  const { data: task } = useQuery({
+    queryKey: ["task", taskId],
+    queryFn: async () => {
       const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
         method: "GET",
       });
       const data = await response.json();
-      setTask(data);
       reset(data);
-    };
-    fetchTask();
-  }, [taskId, reset]);
+      return data;
+    },
+  });
+
+  const { mutate: updateTask, isPending: updateTaskIsLoading } = useMutation({
+    mutationKey: ["updateTask", taskId],
+    mutationFn: async (updatedData) => {
+      const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          title: updatedData.title,
+          description: updatedData.description,
+          time: updatedData.time,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar a tarefa");
+      }
+      const updatedTask = await response.json();
+      queryClient.setQueryData(["task"], (oldTask) => {
+        if (!oldTask) return;
+        return oldTask.map((task) => {
+          task.id === taskId ? updatedTask : task;
+        });
+      });
+    },
+  });
+
+  const { mutate: deleteTask, isPending: deleteTaskIsLoading } = useMutation({
+    mutationKey: ["deleteTask", taskId],
+    mutationFn: async () => {
+      const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Erro ao deletar a tarefa");
+      }
+      queryClient.setQueryData("task", (oldTask) => {
+        return oldTask.filter((oldTask) => {
+          return oldTask.id !== taskId;
+        });
+      });
+    },
+  });
 
   const handleSaveClick = async (data) => {
-    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        title: data.title.trim(),
-        description: data.description.trim(),
-        time: data.time,
-      }),
-      headers: {
-        "Content-Type": "application/json",
+    updateTask(data, {
+      onSuccess: () => {
+        toast.success("Tarefa atualizada com sucesso!");
+      },
+      onError: () => {
+        toast.error("Erro ao atualizar a tarefa!");
       },
     });
-    if (!response.ok) {
-      return toast.error("Erro ao atualizar a tarefa!");
-    }
-    const newTask = await response.json();
-    setTask(newTask);
-    toast.success("Tarefa atualizada com sucesso!");
   };
 
   const handleDeleteTask = async () => {
-    await fetch(`http://localhost:3000/tasks/${taskId}`, {
-      method: "DELETE",
+    deleteTask(undefined, {
+      onSuccess: () => {
+        toast.success("Tarefa deletada com sucesso!");
+        navigate(-1);
+      },
+      onError: () => {
+        toast.error("Erro ao deletar a tarefa!");
+      },
     });
-    toast.success("Tarefa deletada com sucesso!");
-    navigate(-1);
   };
 
   return (
@@ -132,21 +170,18 @@ export default function TaskDetailsPage() {
               <Input
                 id="description"
                 label="Descrição"
-                {...register("description", {
-                  validate: (value) => {
-                    if (value.trim().length === 0) {
-                      return "Descrição não pode ser vazia";
-                    }
-                    return true;
-                  },
-                })}
+                {...register("description")}
                 errorMessage={errors?.description?.message}
               />
             </div>
             {/* Botão de Salvar  */}
             <div className="flex w-full justify-end gap-3">
-              <Button size="large" color="primary" type="submit">
-                {isSubmitting && <LoaderIcon className="animate-spin" />}
+              <Button
+                size="large"
+                color="primary"
+                type="submit"
+                disabled={updateTaskIsLoading || deleteTaskIsLoading}
+              >
                 Salvar
               </Button>
             </div>

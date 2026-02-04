@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import Button from "./Button";
 import TasksSeparator from "./TasksSeparator";
@@ -12,20 +12,12 @@ import {
 import TaskItem from "./TaskItem";
 import AddTaskDialog from "./AddTaskDialog";
 import RemoveTaskDialog from "./RemoveTaskDialog";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import useGetTasks from "../hooks/data/use-get-tasks";
 
 export default function Task() {
   const queryClient = useQueryClient();
-  const { data: tasks } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: async () => {
-      const response = await fetch("http://localhost:3000/tasks", {
-        method: "GET",
-      });
-      const tasks = await response.json();
-      return tasks;
-    },
-  });
+  const { data: tasks } = useGetTasks();
   const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
   const [removeTaskDialogIsOpen, setRemoveTaskDialogIsOpen] = useState(false);
 
@@ -33,21 +25,8 @@ export default function Task() {
   const afternoonTasks = tasks?.filter((task) => task.time === "afternoon");
   const nightTasks = tasks?.filter((task) => task.time === "evening");
 
-  const onDeleteTaskSuccess = async (taskId) => {
-    queryClient.setQueryData(["tasks"], (oldTasks) =>
-      oldTasks.filter((task) => task.id !== taskId),
-    );
-    toast.success("Tarefa deletada com sucesso!");
-  };
-
-  const handleDeleteTask = async () => {
-    await refetch();
-    toast.success("Tarefa removida com sucesso!");
-  };
-
   const handleDeleteAllTasks = () => {
     setRemoveTaskDialogIsOpen(!removeTaskDialogIsOpen);
-    toast.success("Todas as tarefas foram removidas!");
   };
 
   const handleTaskCheckboxClick = (taskId) => {
@@ -69,15 +48,6 @@ export default function Task() {
       }
     });
     queryClient.setQueryData(["tasks"], newTasks);
-  };
-
-  const onTaskSubmitSuccess = async (task) => {
-    queryClient.setQueryData(["tasks"], (oldTasks) => [...oldTasks, task]);
-    toast.success("Tarefa adicionada com sucesso!");
-  };
-
-  const onTaskSubmitError = () => {
-    toast.error("Erro ao adicionar tarefa!");
   };
 
   return (
@@ -117,8 +87,6 @@ export default function Task() {
           <AddTaskDialog
             isOpen={addTaskDialogIsOpen}
             handleClose={() => setAddTaskDialogIsOpen(false)}
-            onSubmitSuccess={onTaskSubmitSuccess}
-            onSubmitError={onTaskSubmitError}
           />
         </div>
       </div>
@@ -137,7 +105,6 @@ export default function Task() {
               key={task.id}
               task={task}
               handleCheckboxClick={handleTaskCheckboxClick}
-              onDeleteSuccess={onDeleteTaskSuccess}
             />
           ))}
         </div>
@@ -155,7 +122,6 @@ export default function Task() {
               key={task.id}
               task={task}
               handleCheckboxClick={handleTaskCheckboxClick}
-              onDeleteSuccess={onDeleteTaskSuccess}
             />
           ))}
         </div>
@@ -173,7 +139,6 @@ export default function Task() {
               key={task.id}
               task={task}
               handleCheckboxClick={handleTaskCheckboxClick}
-              onDeleteSuccess={onDeleteTaskSuccess}
             />
           ))}
         </div>

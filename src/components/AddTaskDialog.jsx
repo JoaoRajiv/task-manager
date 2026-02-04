@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { CSSTransition } from "react-transition-group";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import PropTypes from "prop-types";
 import "./AddTaskDialog.css";
 import TimeSelect from "./TimeSelect";
@@ -9,19 +9,18 @@ import Button from "./Button";
 import { v4 } from "uuid";
 import { LoaderIcon } from "../assets/icons";
 import { useForm } from "react-hook-form";
+import useAddTask from "../hooks/data/use-add-task";
+import { toast } from "sonner";
 
-export default function AddTaskDialog({
-  isOpen,
-  handleClose,
-  onSubmitSuccess,
-  onSubmitError,
-}) {
+export default function AddTaskDialog({ isOpen, handleClose }) {
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
   } = useForm();
+
+  const { mutate: addTask } = useAddTask();
 
   const nodeRef = useRef();
 
@@ -33,17 +32,15 @@ export default function AddTaskDialog({
       time: data.time,
       status: "pending",
     };
-    console.log(task);
-    const response = await fetch("http://localhost:3000/tasks", {
-      method: "POST",
-      body: JSON.stringify(task),
+
+    addTask(task, {
+      onSuccess: () => {
+        handleClose();
+        reset({ title: "", description: "", time: "morning" });
+        toast.success("Tarefa adicionada com sucesso!");
+      },
+      onError: () => toast.error("Erro ao adicionar tarefa!"),
     });
-    if (!response.ok) {
-      return onSubmitError();
-    }
-    onSubmitSuccess(task);
-    handleClose();
-    reset({ title: "", description: "", time: "morning" });
   };
 
   const handleCancelClick = () => {
@@ -145,5 +142,4 @@ export default function AddTaskDialog({
 AddTaskDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  onSubmitSuccess: PropTypes.func.isRequired,
 };
