@@ -29,9 +29,7 @@ export default function TaskDetailsPage() {
     navigate(-1);
   };
 
-  const { data: task } = useGetTask(taskId, (task) => {
-    reset(task);
-  });
+  const { data: task } = useGetTask({ taskId, onSuccess: reset });
 
   const { mutate: updateTask, isPending: updateTaskIsLoading } =
     useUpdateTask(taskId);
