@@ -1,10 +1,8 @@
-import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 import {
   ArrowLeftIcon,
   ChevronRightIcon,
-  LoaderIcon,
   TrashIcon,
 } from "../assets/icons/index.js";
 import Button from "../components/Button.jsx";
@@ -12,10 +10,12 @@ import Input from "../components/Input.jsx";
 import TimeSelect from "../components/TimeSelect.jsx";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import useUpdateTask from "../hooks/data/use-update-task.js";
+import useDeleteTask from "../hooks/data/use-delete-task.js";
+import useGetTask from "../hooks/data/use-get-task.js";
 
 export default function TaskDetailsPage() {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { taskId } = useParams();
   const {
@@ -29,58 +29,15 @@ export default function TaskDetailsPage() {
     navigate(-1);
   };
 
-  const { data: task } = useQuery({
-    queryKey: ["task", taskId],
-    queryFn: async () => {
-      const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-        method: "GET",
-      });
-      const data = await response.json();
-      reset(data);
-      return data;
-    },
+  const { data: task } = useGetTask(taskId, (task) => {
+    reset(task);
   });
 
-  const { mutate: updateTask, isPending: updateTaskIsLoading } = useMutation({
-    mutationKey: ["updateTask", taskId],
-    mutationFn: async (updatedData) => {
-      const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          title: updatedData.title,
-          description: updatedData.description,
-          time: updatedData.time,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Erro ao atualizar a tarefa");
-      }
-      const updatedTask = await response.json();
-      queryClient.setQueryData(["task"], (oldTask) => {
-        if (!oldTask) return;
-        return oldTask.map((task) => {
-          task.id === taskId ? updatedTask : task;
-        });
-      });
-    },
-  });
+  const { mutate: updateTask, isPending: updateTaskIsLoading } =
+    useUpdateTask(taskId);
 
-  const { mutate: deleteTask, isPending: deleteTaskIsLoading } = useMutation({
-    mutationKey: ["deleteTask", taskId],
-    mutationFn: async () => {
-      const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        throw new Error("Erro ao deletar a tarefa");
-      }
-      queryClient.setQueryData("task", (oldTask) => {
-        return oldTask.filter((oldTask) => {
-          return oldTask.id !== taskId;
-        });
-      });
-    },
-  });
+  const { mutate: deleteTask, isPending: deleteTaskIsLoading } =
+    useDeleteTask(taskId);
 
   const handleSaveClick = async (data) => {
     updateTask(data, {
