@@ -1,33 +1,19 @@
-import { useState } from "react";
 import { toast } from "sonner";
-import Button from "./Button";
 import TasksSeparator from "./TasksSeparator";
-import {
-  AddIcon,
-  CloudSunIcon,
-  MoonIcon,
-  SunIcon,
-  TrashIcon,
-} from "../assets/icons";
+import { CloudSunIcon, MoonIcon, SunIcon } from "../assets/icons";
 import TaskItem from "./TaskItem";
-import AddTaskDialog from "./AddTaskDialog";
-import RemoveTaskDialog from "./RemoveTaskDialog";
 import { useQueryClient } from "@tanstack/react-query";
 import useGetTasks from "../hooks/data/use-get-tasks";
+import Header from "./Header";
+import { taskQueriesKeys } from "../keys/queries";
 
 export default function Task() {
   const queryClient = useQueryClient();
   const { data: tasks } = useGetTasks();
-  const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
-  const [removeTaskDialogIsOpen, setRemoveTaskDialogIsOpen] = useState(false);
 
   const morningTasks = tasks?.filter((task) => task.time === "morning");
   const afternoonTasks = tasks?.filter((task) => task.time === "afternoon");
   const nightTasks = tasks?.filter((task) => task.time === "evening");
-
-  const handleDeleteAllTasks = () => {
-    setRemoveTaskDialogIsOpen(!removeTaskDialogIsOpen);
-  };
 
   const handleTaskCheckboxClick = (taskId) => {
     const newTasks = tasks.map((task) => {
@@ -47,49 +33,13 @@ export default function Task() {
         return { ...task, status: "pending" };
       }
     });
-    queryClient.setQueryData(["tasks"], newTasks);
+    queryClient.setQueryData(taskQueriesKeys.getAll(), newTasks);
   };
 
   return (
     <div className="w-full space-y-6 px-8 py-16">
       {/* Título  */}
-      <div className="flex w-full justify-between">
-        <div>
-          <span className="text-xs font-semibold text-brand-primary">
-            Minhas tarefas
-          </span>
-          <h2 className="text-xl font-semibold">Minhas tarefas</h2>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            color="danger"
-            size="large"
-            onClick={() => setRemoveTaskDialogIsOpen(!removeTaskDialogIsOpen)}
-          >
-            Remover Tarefas
-            <TrashIcon />
-          </Button>
-          <Button
-            color="primary"
-            onClick={() => setAddTaskDialogIsOpen(!addTaskDialogIsOpen)}
-            size="large"
-          >
-            Adicionar Tarefa
-            <AddIcon />
-          </Button>
-
-          <RemoveTaskDialog
-            isOpen={removeTaskDialogIsOpen}
-            handleClose={() => setRemoveTaskDialogIsOpen(false)}
-            handleDeleteAllTasks={handleDeleteAllTasks}
-          />
-
-          <AddTaskDialog
-            isOpen={addTaskDialogIsOpen}
-            handleClose={() => setAddTaskDialogIsOpen(false)}
-          />
-        </div>
-      </div>
+      <Header title="Minhas tarefas" subtitle="Minhas tarefas" />
       {/* Tasks  */}
       <div className="rounded-xl bg-white p-6">
         {/* Manhã */}
