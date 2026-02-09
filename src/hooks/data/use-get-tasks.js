@@ -6,7 +6,7 @@ export default function useGetTasks() {
   return useQuery({
     queryKey: taskQueriesKeys.getAll(),
     queryFn: async () => {
-      const { data: tasks } = await api.get("http://localhost:3000/tasks");
+      const { data: tasks } = await api.get("/tasks");
       return tasks;
     },
   });

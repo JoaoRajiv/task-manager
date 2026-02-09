@@ -7,20 +7,20 @@ export default function useUpdateTask(taskId) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: taskMutationsKeys.update(taskId),
-    mutationFn: async (newTask) => {
-      const { data: updatedTask } = await api.patch(
-        `http://localhost:3000/tasks/${taskId}`,
-        newTask,
-        {
-          title: newTask.title,
-          description: newTask.description,
-          time: newTask.time,
-        },
-      );
+    mutationFn: async (data) => {
+      const { data: updatedTask } = await api.patch(`/tasks/${taskId}`, {
+        title: data?.title?.trim(),
+        description: data?.description?.trim(),
+        time: data?.time,
+        status: data?.status,
+      });
       queryClient.setQueryData(taskQueriesKeys.getAll(), (oldTask) => {
-        if (!oldTask) return;
+        if (!oldTask) return [];
         return oldTask.map((task) => {
-          task.id === taskId ? updatedTask : task;
+          if (task.id === taskId) {
+            return updatedTask;
+          }
+          return task;
         });
       });
       queryClient.setQueryData(taskQueriesKeys.getOne(taskId), updatedTask);

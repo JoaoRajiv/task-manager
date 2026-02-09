@@ -1,53 +1,25 @@
 {
   "tasks": [
     {
-      "id": "f4647ba4-e3bb-41b6-a889-c31aa71b24fc",
-      "title": "sergdsr",
-      "description": "fgdfg",
-      "time": "evening",
-      "status": "pending"
-    },
-    {
-      "id": "a40bc0ad-0be9-4425-a8bc-d3fa6ff177b5",
-      "title": "sergdsr",
-      "description": "fgdfg",
-      "time": "evening",
-      "status": "pending"
-    },
-    {
-      "id": "2c88094d-68f8-4db2-9d77-2c26870cb5f0",
-      "title": "teste",
-      "description": "tes",
+      "id": "f420052d-50b7-4302-ba26-fdbb51c2dc4a",
+      "title": "aewrfs",
+      "description": "efse",
       "time": "morning",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
-      "id": "7d58d3e1-6a1e-48b5-9da6-450aa5f80bc9",
-      "title": "tye",
-      "description": "ste",
+      "id": "32a55c37-ace2-49a8-8742-56922e9edc12",
+      "title": "dghdft",
+      "description": "hfdtgh",
       "time": "afternoon",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
-      "id": "e1f3e911-0268-441b-8f11-feb3134d5c71",
-      "title": "tesate",
-      "description": "teste",
-      "time": "afternoon",
-      "status": "pending"
-    },
-    {
-      "id": "e1f33de9-37c6-4780-983f-b3f1cd19f4fd",
-      "title": "drh",
-      "description": "fdthft",
-      "time": "morning",
-      "status": "pending"
-    },
-    {
-      "id": "4807d477-4c74-4050-838b-a266ba8f10d6",
-      "title": "hbfh",
-      "description": "fthf",
-      "time": "morning",
-      "status": "pending"
+      "id": "abeb32fd-ceac-46d8-9cc3-5d57ff9aa92d",
+      "title": "2rwfew",
+      "description": "fgwer",
+      "time": "evening",
+      "status": "done"
     }
   ]
 }

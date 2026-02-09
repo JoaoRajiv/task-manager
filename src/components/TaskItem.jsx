@@ -4,9 +4,12 @@ import PropTypes from "prop-types";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import useDeleteTask from "../hooks/data/use-delete-task";
+import useUpdateTask from "../hooks/data/use-update-task";
 
-export default function TaskItem({ task, handleCheckboxClick }) {
+export default function TaskItem({ task }) {
   const { mutate: deleteTask, isPending } = useDeleteTask(task.id);
+
+  const { mutate: updateTask } = useUpdateTask(task.id);
 
   const handleDeleteClick = async () => {
     deleteTask(undefined, {
@@ -17,6 +20,30 @@ export default function TaskItem({ task, handleCheckboxClick }) {
         toast.error("Erro ao deletar tarefa");
       },
     });
+  };
+
+  const handleCheckboxClick = () => {
+    updateTask(
+      { status: getNewStatus() },
+      {
+        onSuccess: () => {
+          toast.success("Tarefa atualizada com sucesso!");
+        },
+        onError: () => {
+          toast.error("Erro ao atualizar tarefa");
+        },
+      },
+    );
+  };
+
+  const getNewStatus = () => {
+    if (task.status === "pending") {
+      return "in_progress";
+    }
+    if (task.status === "in_progress") {
+      return "done";
+    }
+    return "pending";
   };
 
   const getStatusClasses = () => {
@@ -44,7 +71,7 @@ export default function TaskItem({ task, handleCheckboxClick }) {
             type="checkbox"
             checked={task.status === "done"}
             className="absolute h-full w-full cursor-pointer opacity-0"
-            onChange={() => handleCheckboxClick(task.id)}
+            onChange={handleCheckboxClick}
           />
           {task.status === "done" && <CheckIcon />}
           {task.status === "in_progress" && (
