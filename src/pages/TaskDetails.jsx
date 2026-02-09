@@ -75,7 +75,7 @@ export default function TaskDetailsPage() {
               <ArrowLeftIcon />
             </button>
             <div className="flex items-center gap-1 text-xs">
-              <Link className="text-brand-text-gray" to="/">
+              <Link className="text-brand-text-gray" to="/tasks">
                 Minhas tarefas
               </Link>
               <ChevronRightIcon className="text-brand-text-gray" />
