@@ -20,7 +20,6 @@ export default function HomePage() {
               Resumos da tarefas disponíveis
             </span>
             <div className="space-y-3">
-              {!tasks && <p>Carregando...</p>}
               {tasks?.length === 0 ? (
                 <p>Nenhuma tarefa encontrada.</p>
               ) : (

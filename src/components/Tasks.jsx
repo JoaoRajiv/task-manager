@@ -5,7 +5,7 @@ import TaskItem from "./TaskItem";
 import useGetTasks from "../hooks/data/use-get-tasks";
 import Header from "./Header";
 
-export default function Task() {
+export default function Tasks() {
   const { data: tasks } = useGetTasks();
 
   const morningTasks = tasks?.filter((task) => task && task.time === "morning");
